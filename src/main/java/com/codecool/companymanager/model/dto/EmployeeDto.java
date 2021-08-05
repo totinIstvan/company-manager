@@ -1,13 +1,14 @@
-package com.codecool.companymanager.model.entity;
+package com.codecool.companymanager.model.dto;
 
-import javax.persistence.*;
+import com.codecool.companymanager.model.entity.Company;
+import com.codecool.companymanager.model.entity.Department;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDateTime;
 
-@Entity
-public class Employee {
+@JsonIgnoreProperties({"department", "company"})
+public class EmployeeDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -18,14 +19,9 @@ public class Employee {
 
     private LocalDateTime joinDate;
 
-    @ManyToOne
     private Department department;
 
-    @ManyToOne
     private Company company;
-
-    public Employee() {
-    }
 
     public Long getId() {
         return id;
@@ -83,3 +79,4 @@ public class Employee {
         this.company = company;
     }
 }
+
