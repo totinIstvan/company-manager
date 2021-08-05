@@ -1,7 +1,5 @@
 package com.codecool.companymanager.model.dto;
 
-import com.codecool.companymanager.model.entity.Company;
-import com.codecool.companymanager.model.entity.Department;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
@@ -19,9 +17,9 @@ public class EmployeeDto {
 
     private LocalDateTime joinDate;
 
-    private Department department;
+    private DepartmentDto department;
 
-    private Company company;
+    private CompanyDto company;
 
     public Long getId() {
         return id;
@@ -63,19 +61,19 @@ public class EmployeeDto {
         this.joinDate = joinDate;
     }
 
-    public Department getDepartment() {
+    public DepartmentDto getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(DepartmentDto department) {
         this.department = department;
     }
 
-    public Company getCompany() {
+    public CompanyDto getCompany() {
         return company;
     }
 
-    public void setCompany(Company company) {
+    public void setCompany(CompanyDto company) {
         this.company = company;
     }
 }
