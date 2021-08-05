@@ -1,18 +1,10 @@
-package com.codecool.companymanager.model.entity;
+package com.codecool.companymanager.model.dto;
 
-import javax.persistence.*;
+public class DepartmentDto {
 
-@Entity
-public class Department {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    public Department() {
-    }
 
     public Long getId() {
         return id;
@@ -29,5 +21,4 @@ public class Department {
     public void setName(String name) {
         this.name = name;
     }
-
 }

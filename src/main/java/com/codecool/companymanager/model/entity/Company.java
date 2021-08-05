@@ -17,6 +17,9 @@ public class Company {
     private String address;
 
     @ManyToMany
+    @JoinTable(name = "company_departments",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id"))
     private List<Department> departments;
 
     public Company() {
@@ -54,4 +57,11 @@ public class Company {
         this.address = address;
     }
 
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
 }

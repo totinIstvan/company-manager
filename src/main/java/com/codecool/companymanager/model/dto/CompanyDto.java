@@ -1,5 +1,9 @@
 package com.codecool.companymanager.model.dto;
 
+import com.codecool.companymanager.model.entity.Department;
+
+import java.util.List;
+
 public class CompanyDto {
 
     private Long id;
@@ -9,6 +13,8 @@ public class CompanyDto {
     private String registrationNumber;
 
     private String address;
+
+    private List<Department> departments;
 
     public Long getId() {
         return id;
@@ -42,4 +48,11 @@ public class CompanyDto {
         this.address = address;
     }
 
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
 }
