@@ -1,10 +1,7 @@
 package com.codecool.companymanager.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.time.LocalDateTime;
 
-@JsonIgnoreProperties({"department", "company"})
 public class EmployeeDto {
 
     private Long id;
@@ -77,4 +74,3 @@ public class EmployeeDto {
         this.company = company;
     }
 }
-

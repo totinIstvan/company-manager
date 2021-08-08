@@ -26,21 +26,29 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<CompanyDto> getAll() {
-        return companyMapper.companiesToDtos(companyService.findAll());
+    public List<CompanyDto> getAll(@RequestParam(required = false) Boolean full) {
+        List<Company> companies = companyService.findAll();
+        return mapCompanies(companies, full);
     }
 
-    @GetMapping("/{id}")
-    public CompanyDto getById(@PathVariable long id) {
+    @GetMapping(path = "/{id}")
+    public CompanyDto getById(@PathVariable long id, @RequestParam(required = false) Boolean full) {
         Company company = companyService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with id " + id + " not found"));
+        if (full == null || !full) {
+            return companyMapper.companyToSummaryDto(company);
+        }
         return companyMapper.companyToDto(company);
     }
 
     @PostMapping
     public CompanyDto addNew(@RequestBody CompanyDto companyDto) {
-        Company company = companyService.save(companyMapper.companyDtoToCompany(companyDto));
-        return companyMapper.companyToDto(company);
+        try {
+            Company company = companyService.save(companyMapper.companyDtoToCompany(companyDto));
+            return companyMapper.companyToDto(company);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -64,4 +72,11 @@ public class CompanyController {
         }
     }
 
+    private List<CompanyDto> mapCompanies(List<Company> companies, Boolean full) {
+        if (full == null || !full) {
+            return companyMapper.companiesToSummaryDtos(companies);
+        } else {
+            return companyMapper.companiesToDtos(companies);
+        }
+    }
 }

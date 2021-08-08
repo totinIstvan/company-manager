@@ -26,6 +26,9 @@ public class EmployeeService {
 
     @Transactional
     public Employee save(Employee employee) {
+        if (employeeRepository.existsById(employee.getId())) {
+            throw new IllegalArgumentException("Employee with requested id already exists, please try the update function");
+        }
         return employeeRepository.save(employee);
     }
 

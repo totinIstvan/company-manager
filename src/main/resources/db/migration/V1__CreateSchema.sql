@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS company_departments
 (
     department_id long NOT NULL,
     company_id long NOT NULL,
-    PRIMARY KEY (department_id, company_id),
+--     PRIMARY KEY (department_id, company_id),
     FOREIGN KEY (department_id) REFERENCES department(id),
     FOREIGN KEY (company_id) REFERENCES company(id)
 );

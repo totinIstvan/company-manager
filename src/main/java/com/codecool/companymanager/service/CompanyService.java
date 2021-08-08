@@ -26,6 +26,9 @@ public class CompanyService {
 
     @Transactional
     public Company save(Company company) {
+        if (companyRepository.existsById(company.getId())) {
+            throw new IllegalArgumentException("Company with requested id already exists, please try the update function");
+        }
         return companyRepository.save(company);
     }
 

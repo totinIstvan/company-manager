@@ -25,20 +25,36 @@ public class EmployeeController {
     private EmployeeMapper employeeMapper;
 
     @GetMapping
-    public List<EmployeeDto> getAll() {
-        return employeeMapper.employeesToDtos(employeeService.findAll());
+    public List<EmployeeDto> getAll(@RequestParam(required = false) Boolean full) {
+        List<Employee> employees = employeeService.findAll();
+        return mapEmployees(employees, full);
+    }
+
+    private List<EmployeeDto> mapEmployees(List<Employee> employees, Boolean full) {
+        if (full == null || !full) {
+            return employeeMapper.employeesToSummaryDtos(employees);
+        } else {
+            return employeeMapper.employeesToDtos(employees);
+        }
     }
 
     @GetMapping("/{id}")
-    public EmployeeDto getById(@PathVariable long id) {
+    public EmployeeDto getById(@PathVariable long id, @RequestParam(required = false) Boolean full) {
         Employee employee = employeeService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id " + id + " not found"));
+        if (full == null || !full) {
+            return employeeMapper.employeeToSummaryDto(employee);
+        }
         return employeeMapper.employeeToDto(employee);
     }
 
     @PostMapping
     public EmployeeDto addNew(@RequestBody @Valid EmployeeDto employeeDto) {
-        return employeeMapper.employeeToDto(employeeService.save(employeeMapper.employeeDtoToEmployee(employeeDto)));
+        try {
+            return employeeMapper.employeeToDto(employeeService.save(employeeMapper.employeeDtoToEmployee(employeeDto)));
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")

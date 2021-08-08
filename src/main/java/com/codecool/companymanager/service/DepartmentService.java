@@ -26,6 +26,9 @@ public class DepartmentService {
 
     @Transactional
     public Department save(Department department) {
+        if (departmentRepository.existsById(department.getId())) {
+            throw new IllegalArgumentException("Department with requested id already exists, please try the update function");
+        }
         return departmentRepository.save(department);
     }
 

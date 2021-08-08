@@ -33,14 +33,19 @@ public class DepartmentController {
     @GetMapping("/{id}")
     public DepartmentDto getById(@PathVariable long id) {
         Department department = departmentService.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department with id " + id + " not found"));
         return departmentMapper.departmentToDto(department);
     }
 
     @PostMapping
     public DepartmentDto addNew(@RequestBody DepartmentDto departmentDto) {
-        Department department = departmentService.save(departmentMapper.departmentDtoToDepartment(departmentDto));
-        return departmentMapper.departmentToDto(department);
+        try {
+            Department department = departmentService.save(departmentMapper.departmentDtoToDepartment(departmentDto));
+            return departmentMapper.departmentToDto(department);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
     }
 
     @PutMapping("/{id}")

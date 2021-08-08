@@ -27,20 +27,17 @@ INSERT INTO company_departments (company_id, department_id) VALUES ( 3, 4 );
 INSERT INTO company_departments (company_id, department_id) VALUES ( 3, 6 );
 INSERT INTO company_departments (company_id, department_id) VALUES ( 3, 7 );
 
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'John Doe', 'CEO', 15000, '1980-06-15',  1, 1);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jack Doe', 'CEO', 15000, '1989-10-10',  2, 1);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jason Doe', 'CEO', 15000, '1980-06-15',  3, 1);
-
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jane Doe', 'CMO', 15000, '1980-06-15',  1, 2);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jessica Doe', 'CTO', 15000, '1980-06-15',  1, 3);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jake Doe', 'CBO', 15000, '1980-06-15',  1, 5);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Julia Doe', 'COO', 15000, '1980-06-15',  1, 8);
-
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Josh Doe', 'CFO', 15000, '1980-06-15',  2, 3);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Joe Doe', 'CBO', 15000, '1980-06-15',  2, 8);
-
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jacquelyn Doe', 'CBO', 15000, '1980-06-15',  3, 1);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jaime Doe', 'CMO', 15000, '1980-06-15',  3, 7);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jeffrey Doe', 'CFO', 15000, '1980-06-15',  3, 2);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jasper Doe', 'COO', 15000, '1980-06-15',  3, 6);
-INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'James Doe', 'CTO', 15000, '1980-06-15',  3, 4);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'John Doe', 'CEO', 12800, '1996-06-15',  1, 1);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jack Doe', 'CEO', 12800, '1989-10-10',  2, 1);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jason Doe', 'CEO', 12800, '1990-06-11',  3, 1);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jane Doe', 'CMO', 13500, '2000-09-05',  1, 2);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jessica Doe', 'CTO', 13800, '2007-06-25',  1, 3);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jake Doe', 'CBO', 12200, '2009-06-20',  1, 5);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Julia Doe', 'COO', 12300, '2001-06-03',  1, 8);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Josh Doe', 'CFO', 11600, '2014-10-13',  2, 3);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Joe Doe', 'CBO', 12200, '2020-09-15',  2, 8);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jacquelyn Doe', 'CBO', 12200, '2004-02-24',  3, 1);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jaime Doe', 'CMO', 13500, '1997-12-08',  3, 7);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jeffrey Doe', 'CFO', 11600, '2003-03-10',  3, 2);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'Jasper Doe', 'COO', 12300, '2009-05-17',  3, 6);
+INSERT INTO employee (name, title, salary, join_date, company_id, department_id) VALUES ( 'James Doe', 'CTO', 13800, '2001-01-15',  3, 4);
