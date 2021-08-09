@@ -69,7 +69,8 @@ public class DepartmentController {
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department with id " + id + " not found");
         } catch (DataIntegrityViolationException exception) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Department with id " + id + " cannot be deleted from the database because it is associated with existing company");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Department with id " + id +
+                    " cannot be deleted from the database because it is associated with existing company");
         }
     }
 }

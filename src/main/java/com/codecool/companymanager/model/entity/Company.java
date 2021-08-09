@@ -16,6 +16,8 @@ public class Company {
 
     private String address;
 
+    private String phoneNumber;
+
     @ManyToMany
     @JoinTable(name = "company_departments",
             joinColumns = @JoinColumn(name = "company_id"),
@@ -55,6 +57,14 @@ public class Company {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public List<Department> getDepartments() {

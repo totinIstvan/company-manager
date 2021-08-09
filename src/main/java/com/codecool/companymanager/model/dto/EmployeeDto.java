@@ -1,9 +1,6 @@
 package com.codecool.companymanager.model.dto;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public class EmployeeDto {
@@ -16,8 +13,11 @@ public class EmployeeDto {
     @NotBlank(message = "Title is mandatory")
     private String title;
 
+    @Email(message="Invalid email address")
+    private String email;
+
     @Min(0)
-    private int Salary;
+    private int salary;
 
     @Past(message = "Invalid join date")
     private LocalDateTime joinDate;
@@ -52,12 +52,20 @@ public class EmployeeDto {
         this.title = title;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getSalary() {
-        return Salary;
+        return salary;
     }
 
     public void setSalary(int salary) {
-        Salary = salary;
+        this.salary = salary;
     }
 
     public LocalDateTime getJoinDate() {

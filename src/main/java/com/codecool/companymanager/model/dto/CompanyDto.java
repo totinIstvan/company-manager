@@ -1,5 +1,7 @@
 package com.codecool.companymanager.model.dto;
 
+import com.codecool.companymanager.validator.ContactNumberConstraint;
+
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -15,6 +17,9 @@ public class CompanyDto {
 
     @NotBlank(message = "Address is mandatory")
     private String address;
+
+    @ContactNumberConstraint
+    private String phoneNumber;
 
     private List<DepartmentDto> departments;
 
@@ -48,6 +53,14 @@ public class CompanyDto {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public List<DepartmentDto> getDepartments() {

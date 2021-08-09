@@ -1,5 +1,7 @@
 package com.codecool.companymanager.service;
 
+import com.codecool.companymanager.model.entity.Company;
+import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.entity.Employee;
 import com.codecool.companymanager.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,17 @@ public class EmployeeService {
     @Transactional
     public void deleteById(long id) {
         employeeRepository.deleteById(id);
+    }
+
+    public List<Employee> getWithSalaryHigherThan(int limit) {
+        return employeeRepository.findEmployeesBySalaryAfter(limit);
+    }
+
+    public List<Employee> getAllEmployeesOfGivenCompany(Company company) {
+        return employeeRepository.findAllEmployeesByCompany(company);
+    }
+
+    public List<Employee> getAllEmployeesOfGivenCompanyAndDepartment(Company company, Department department) {
+        return employeeRepository.findAllEmployeesByCompanyAndDepartment(company, department);
     }
 }

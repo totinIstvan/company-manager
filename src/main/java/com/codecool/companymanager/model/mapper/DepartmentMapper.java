@@ -14,6 +14,4 @@ public interface DepartmentMapper {
     DepartmentDto departmentToDto(Department department);
 
     Department departmentDtoToDepartment(DepartmentDto departmentDto);
-
-    List<Department> departmentDtosToDepartments(List<DepartmentDto> departments);
 }

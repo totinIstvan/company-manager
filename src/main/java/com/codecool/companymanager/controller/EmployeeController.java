@@ -6,7 +6,6 @@ import com.codecool.companymanager.model.entity.Employee;
 import com.codecool.companymanager.model.mapper.EmployeeMapper;
 import com.codecool.companymanager.service.CompanyService;
 import com.codecool.companymanager.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,19 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
-    @Autowired
-    private EmployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
+
+    public EmployeeController(EmployeeService employeeService,
+                              EmployeeMapper employeeMapper,
+                              CompanyService companyService) {
+        this.employeeService = employeeService;
+        this.employeeMapper = employeeMapper;
+        this.companyService = companyService;
+    }
 
     @GetMapping
     public List<EmployeeDto> getAll(@RequestParam(required = false) Boolean full) {
@@ -89,5 +93,11 @@ public class EmployeeController {
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id " + id + " not found");
         }
+    }
+
+    @GetMapping("/limit")
+    public List<EmployeeDto> getWithSalaryHigherThan(@RequestParam int limit) {
+        List<Employee> employees = employeeService.getWithSalaryHigherThan(limit);
+        return employeeMapper.employeesToSummaryDtos(employees);
     }
 }

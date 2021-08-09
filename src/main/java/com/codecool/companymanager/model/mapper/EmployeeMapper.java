@@ -23,8 +23,6 @@ public interface EmployeeMapper {
 
     Employee employeeDtoToEmployee(EmployeeDto employeeDto);
 
-    List<Employee> employeeDtosToEmployees(List<EmployeeDto> employees);
-
     @IterableMapping(qualifiedByName = "summary")
     List<EmployeeDto> employeesToSummaryDtos(List<Employee> employees);
 }

@@ -14,7 +14,9 @@ public class Employee {
 
     private String title;
 
-    private int Salary;
+    private String email;
+
+    private int salary;
 
     private LocalDateTime joinDate;
 
@@ -51,12 +53,20 @@ public class Employee {
         this.title = title;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getSalary() {
-        return Salary;
+        return salary;
     }
 
     public void setSalary(int salary) {
-        Salary = salary;
+        this.salary = salary;
     }
 
     public LocalDateTime getJoinDate() {
