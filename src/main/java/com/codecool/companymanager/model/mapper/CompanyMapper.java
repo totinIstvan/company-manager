@@ -16,7 +16,7 @@ public interface CompanyMapper {
 
     List<CompanyDto> companiesToDtos(List<Company> companies);
 
-    @Mapping(target = "departments" , ignore = true)
+    @Mapping(target = "departments", ignore = true)
     @Named("summary")
     CompanyDto companyToSummaryDto(Company company);
 

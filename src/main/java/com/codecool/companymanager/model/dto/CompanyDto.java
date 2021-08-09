@@ -1,15 +1,19 @@
 package com.codecool.companymanager.model.dto;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class CompanyDto {
 
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
+    @NotBlank(message = "Registration number is mandatory")
     private String registrationNumber;
 
+    @NotBlank(message = "Address is mandatory")
     private String address;
 
     private List<DepartmentDto> departments;

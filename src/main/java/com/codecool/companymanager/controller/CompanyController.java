@@ -4,11 +4,13 @@ import com.codecool.companymanager.model.dto.CompanyDto;
 import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.model.mapper.CompanyMapper;
 import com.codecool.companymanager.service.CompanyService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -42,7 +44,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public CompanyDto addNew(@RequestBody CompanyDto companyDto) {
+    public CompanyDto addNew(@RequestBody @Valid CompanyDto companyDto) {
         try {
             Company company = companyService.save(companyMapper.companyDtoToCompany(companyDto));
             return companyMapper.companyToDto(company);
@@ -52,7 +54,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompanyDto> update(@PathVariable long id, @RequestBody CompanyDto companyDto) {
+    public ResponseEntity<CompanyDto> update(@PathVariable long id, @RequestBody @Valid CompanyDto companyDto) {
         Company company = companyMapper.companyDtoToCompany(companyDto);
         company.setId(id);
         try {
@@ -69,6 +71,8 @@ public class CompanyController {
             companyService.deleteById(id);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with id " + id + " not found");
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Company with id " + id + " cannot be deleted from the database because it still has existing departments and/or employees");
         }
     }
 

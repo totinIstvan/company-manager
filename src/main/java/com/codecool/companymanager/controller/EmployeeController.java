@@ -1,8 +1,10 @@
 package com.codecool.companymanager.controller;
 
 import com.codecool.companymanager.model.dto.EmployeeDto;
+import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.model.entity.Employee;
 import com.codecool.companymanager.model.mapper.EmployeeMapper;
+import com.codecool.companymanager.service.CompanyService;
 import com.codecool.companymanager.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private CompanyService companyService;
 
     @GetMapping
     public List<EmployeeDto> getAll(@RequestParam(required = false) Boolean full) {
@@ -51,9 +56,17 @@ public class EmployeeController {
     @PostMapping
     public EmployeeDto addNew(@RequestBody @Valid EmployeeDto employeeDto) {
         try {
+            Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
+            Company company = companyService.findById(employee.getCompany().getId()).get();
+            if (!company.getDepartments().contains(employeeMapper.employeeDtoToEmployee(employeeDto).getDepartment())) {
+                company.getDepartments().add(employeeMapper.employeeDtoToEmployee(employeeDto).getDepartment());
+                companyService.update(company);
+            }
             return employeeMapper.employeeToDto(employeeService.save(employeeMapper.employeeDtoToEmployee(employeeDto)));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (NoSuchElementException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with requested id does not exist");
         }
     }
 

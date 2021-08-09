@@ -1,21 +1,31 @@
 package com.codecool.companymanager.model.dto;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDateTime;
 
 public class EmployeeDto {
 
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
+    @NotBlank(message = "Title is mandatory")
     private String title;
 
+    @Min(0)
     private int Salary;
 
+    @Past(message = "Invalid join date")
     private LocalDateTime joinDate;
 
+    @NotNull(message = "Department is mandatory")
     private DepartmentDto department;
 
+    @NotNull(message = "Company is mandatory")
     private CompanyDto company;
 
     public Long getId() {

@@ -1,9 +1,12 @@
 package com.codecool.companymanager.model.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class DepartmentDto {
 
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     public Long getId() {

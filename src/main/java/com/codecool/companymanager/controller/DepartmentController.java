@@ -4,11 +4,13 @@ import com.codecool.companymanager.model.dto.DepartmentDto;
 import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.mapper.DepartmentMapper;
 import com.codecool.companymanager.service.DepartmentService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,7 +40,7 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public DepartmentDto addNew(@RequestBody DepartmentDto departmentDto) {
+    public DepartmentDto addNew(@RequestBody @Valid DepartmentDto departmentDto) {
         try {
             Department department = departmentService.save(departmentMapper.departmentDtoToDepartment(departmentDto));
             return departmentMapper.departmentToDto(department);
@@ -49,7 +51,7 @@ public class DepartmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DepartmentDto> update(@PathVariable long id, @RequestBody DepartmentDto departmentDto) {
+    public ResponseEntity<DepartmentDto> update(@PathVariable long id, @RequestBody @Valid DepartmentDto departmentDto) {
         Department department = departmentMapper.departmentDtoToDepartment(departmentDto);
         department.setId(id);
         try {
@@ -66,6 +68,8 @@ public class DepartmentController {
             departmentService.deleteById(id);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Department with id " + id + " not found");
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Department with id " + id + " cannot be deleted from the database because it is associated with existing company");
         }
     }
 }

@@ -16,8 +16,8 @@ public interface EmployeeMapper {
 
     List<EmployeeDto> employeesToDtos(List<Employee> employees);
 
-    @Mapping(target = "department" , ignore = true)
-    @Mapping(target = "company" , ignore = true)
+    @Mapping(target = "department", ignore = true)
+    @Mapping(target = "company", ignore = true)
     @Named("summary")
     EmployeeDto employeeToSummaryDto(Employee employee);
 
