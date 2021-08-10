@@ -13,7 +13,7 @@ public class EmployeeDto {
     @NotBlank(message = "Title is mandatory")
     private String title;
 
-    @Email(message="Invalid email address")
+    @Email(message = "Invalid email address")
     private String email;
 
     @Min(0)

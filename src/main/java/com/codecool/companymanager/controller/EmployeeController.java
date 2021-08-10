@@ -2,10 +2,13 @@ package com.codecool.companymanager.controller;
 
 import com.codecool.companymanager.model.dto.EmployeeDto;
 import com.codecool.companymanager.model.entity.Company;
+import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.entity.Employee;
 import com.codecool.companymanager.model.mapper.EmployeeMapper;
 import com.codecool.companymanager.service.CompanyService;
+import com.codecool.companymanager.service.DepartmentService;
 import com.codecool.companymanager.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +28,16 @@ public class EmployeeController {
 
     private final CompanyService companyService;
 
+    private final DepartmentService departmentService;
+
     public EmployeeController(EmployeeService employeeService,
                               EmployeeMapper employeeMapper,
-                              CompanyService companyService) {
+                              CompanyService companyService,
+                              DepartmentService departmentService) {
         this.employeeService = employeeService;
         this.employeeMapper = employeeMapper;
         this.companyService = companyService;
+        this.departmentService = departmentService;
     }
 
     @GetMapping
@@ -60,29 +67,33 @@ public class EmployeeController {
     @PostMapping
     public EmployeeDto addNew(@RequestBody @Valid EmployeeDto employeeDto) {
         try {
-            Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
-            Company company = companyService.findById(employee.getCompany().getId()).get();
-            if (!company.getDepartments().contains(employeeMapper.employeeDtoToEmployee(employeeDto).getDepartment())) {
-                company.getDepartments().add(employeeMapper.employeeDtoToEmployee(employeeDto).getDepartment());
-                companyService.update(company);
-            }
+            createNewDepartmentForCompanyIfNecessary(employeeDto);
             return employeeMapper.employeeToDto(employeeService.save(employeeMapper.employeeDtoToEmployee(employeeDto)));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        } catch (NoSuchElementException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with requested id does not exist");
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDto> update(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
-        Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
-        employee.setId(id);
         try {
+            createNewDepartmentForCompanyIfNecessary(employeeDto);
+            Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
             EmployeeDto savedEmployeeDto = employeeMapper.employeeToDto(employeeService.update(employee));
             return ResponseEntity.ok(savedEmployeeDto);
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id " + id + " not found");
+        }
+    }
+
+    private void createNewDepartmentForCompanyIfNecessary(@RequestBody @Valid EmployeeDto employeeDto) {
+        Company company = companyService.findById(employeeDto.getCompany().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with requested id does not exist"));
+        Department department = departmentService.findById(employeeDto.getDepartment().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department with requested id does not exist"));
+        if (!company.getDepartments().contains(department)) {
+            company.getDepartments().add(department);
+            companyService.update(company);
         }
     }
 

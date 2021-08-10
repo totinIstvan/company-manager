@@ -44,7 +44,11 @@ public class EmployeeService {
 
     @Transactional
     public void deleteById(long id) {
-        employeeRepository.deleteById(id);
+        if (employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     public List<Employee> getWithSalaryHigherThan(int limit) {

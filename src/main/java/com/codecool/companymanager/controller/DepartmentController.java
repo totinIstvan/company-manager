@@ -20,7 +20,7 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    private  final DepartmentMapper departmentMapper;
+    private final DepartmentMapper departmentMapper;
 
     public DepartmentController(DepartmentService departmentService, DepartmentMapper departmentMapper) {
         this.departmentService = departmentService;

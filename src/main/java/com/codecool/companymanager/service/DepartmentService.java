@@ -42,6 +42,10 @@ public class DepartmentService {
 
     @Transactional
     public void deleteById(long id) {
-        departmentRepository.deleteById(id);
+        if (departmentRepository.existsById(id)) {
+            departmentRepository.deleteById(id);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }

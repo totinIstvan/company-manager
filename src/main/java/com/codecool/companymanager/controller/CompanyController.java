@@ -112,7 +112,7 @@ public class CompanyController {
         return employeeMapper.employeesToSummaryDtos(employees);
     }
 
-    @GetMapping(path = "/{companyId}/{departmentId}/employees")
+    @GetMapping(path = "/{companyId}/departments/{departmentId}/employees")
     public List<EmployeeDto> getAllEmployeesOfTheCompanyByDepartment(@PathVariable long companyId, @PathVariable long departmentId) {
         Company company = companyService.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with id " + companyId + " not found"));
