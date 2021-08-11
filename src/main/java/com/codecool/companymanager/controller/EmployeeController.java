@@ -8,7 +8,6 @@ import com.codecool.companymanager.model.mapper.EmployeeMapper;
 import com.codecool.companymanager.service.CompanyService;
 import com.codecool.companymanager.service.DepartmentService;
 import com.codecool.companymanager.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
