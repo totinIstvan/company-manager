@@ -2,7 +2,7 @@ package com.codecool.companymanager.service;
 
 import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.repository.CompanyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +13,11 @@ import java.util.Optional;
 @Service
 public class CompanyService {
 
-    @Autowired
-    private CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
+
+    public CompanyService(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     public List<Company> findAll() {
         return companyRepository.findAll();
@@ -29,7 +32,12 @@ public class CompanyService {
         if (companyRepository.existsById(company.getId())) {
             throw new IllegalArgumentException("Company with requested id already exists, please try the update function");
         }
-        return companyRepository.save(company);
+
+        try {
+            return companyRepository.save(company);
+        } catch (DataIntegrityViolationException exception) {
+            throw new IllegalArgumentException("Company with that name or registration number already exists");
+        }
     }
 
     @Transactional

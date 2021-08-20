@@ -78,6 +78,7 @@ public class EmployeeController {
         try {
             createNewDepartmentForCompanyIfNecessary(employeeDto);
             Employee employee = employeeMapper.employeeDtoToEmployee(employeeDto);
+            employee.setId(id);
             EmployeeDto savedEmployeeDto = employeeMapper.employeeToDto(employeeService.update(employee));
             return ResponseEntity.ok(savedEmployeeDto);
         } catch (NoSuchElementException e) {
@@ -85,7 +86,7 @@ public class EmployeeController {
         }
     }
 
-    private void createNewDepartmentForCompanyIfNecessary(@RequestBody @Valid EmployeeDto employeeDto) {
+    private void createNewDepartmentForCompanyIfNecessary(EmployeeDto employeeDto) {
         Company company = companyService.findById(employeeDto.getCompany().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with requested id does not exist"));
         Department department = departmentService.findById(employeeDto.getDepartment().getId())

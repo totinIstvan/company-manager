@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS company CASCADE;
 CREATE TABLE IF NOT EXISTS company
 (
     id                  long identity NOT NULL PRIMARY KEY,
-    name                VARCHAR(255)  NOT NULL,
-    registration_number VARCHAR(30)   NOT NULL,
+    name                VARCHAR(255)  NOT NULL UNIQUE,
+    registration_number VARCHAR(30)   NOT NULL UNIQUE,
     address             VARCHAR(255)  NOT NULL,
     phone_number        VARCHAR(30)   NOT NULL
 );

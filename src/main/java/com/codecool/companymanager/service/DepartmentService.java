@@ -2,7 +2,6 @@ package com.codecool.companymanager.service;
 
 import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +12,11 @@ import java.util.Optional;
 @Service
 public class DepartmentService {
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
+
+    public DepartmentService(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
 
     public List<Department> findAll() {
         return departmentRepository.findAll();

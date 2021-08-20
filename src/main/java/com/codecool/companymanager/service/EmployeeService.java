@@ -4,7 +4,6 @@ import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.entity.Employee;
 import com.codecool.companymanager.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,11 @@ import java.util.Optional;
 @Service
 public class EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public List<Employee> findAll() {
         return employeeRepository.findAll();

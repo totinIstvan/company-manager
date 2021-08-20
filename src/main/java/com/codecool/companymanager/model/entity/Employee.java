@@ -29,6 +29,24 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(Long id,
+                    String name,
+                    String title,
+                    String email,
+                    int salary,
+                    LocalDateTime joinDate,
+                    Department department,
+                    Company company) {
+        this.id = id;
+        this.name = name;
+        this.title = title;
+        this.email = email;
+        this.salary = salary;
+        this.joinDate = joinDate;
+        this.department = department;
+        this.company = company;
+    }
+
     public Long getId() {
         return id;
     }
