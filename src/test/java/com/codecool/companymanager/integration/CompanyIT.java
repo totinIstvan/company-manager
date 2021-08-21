@@ -110,21 +110,21 @@ public class CompanyIT {
 
     @Test
     public void addNew_addCompanyToEmptyDatabaseWithoutDepartments_shouldReturnSameCompany() {
-        Company resultCompany = testRestTemplate.postForObject(baseUrl, testCompany1, Company.class);
+        Company result = testRestTemplate.postForObject(baseUrl, testCompany1, Company.class);
 
         assertThat(testCompany1)
                 .usingRecursiveComparison()
-                .isEqualTo(resultCompany);
+                .isEqualTo(result);
     }
 
     @Test
     public void addNew_addCompanyToEmptyDatabaseWithDepartments_shouldReturnSameCompany() {
         this.testCompany1.setDepartments(Arrays.asList(testDepartment1, testDepartment2));
-        Company resultCompany = testRestTemplate.postForObject(baseUrl, testCompany1, Company.class);
+        Company result = testRestTemplate.postForObject(baseUrl, testCompany1, Company.class);
 
         assertThat(testCompany1)
                 .usingRecursiveComparison()
-                .isEqualTo(resultCompany);
+                .isEqualTo(result);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void getAll_addedCompaniesWithDepartmentsIfRequestParamFullEqualsFalse_shouldReturnAllCompaniesWithoutDepartments() {
+    public void getAll_addedSomeCompaniesWithDepartmentsIfRequestParamFullEqualsFalse_shouldReturnAllCompaniesWithoutDepartments() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
@@ -150,7 +150,7 @@ public class CompanyIT {
     }
 
     @Test
-    public void getAll_addedCompaniesWithDepartmentsIfRequestParamFullEqualsTrue_shouldReturnAllCompaniesWithDepartments() {
+    public void getAll_addedSomeCompaniesWithDepartmentsIfRequestParamFullEqualsTrue_shouldReturnAllCompaniesWithDepartments() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
@@ -170,37 +170,37 @@ public class CompanyIT {
     }
 
     @Test
-    public void getById_addedCompaniesWithDepartmentsIfRequestParamFullEqualsFalse_shouldReturnCompanyWithoutDepartments() {
+    public void getById_addedSomeCompaniesWithDepartmentsIfRequestParamFullEqualsFalse_shouldReturnCompanyWithoutDepartments() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
-        Company sourceCompany = allCompanies.get(0);
+        Company expected = allCompanies.get(0);
 
-        Company resultCompany = testRestTemplate.getForObject(baseUrl + "/" + sourceCompany.getId() + "?full=false", Company.class);
+        Company result = testRestTemplate.getForObject(baseUrl + "/" + expected.getId() + "?full=false", Company.class);
 
-        assertEquals(sourceCompany.getName(), resultCompany.getName());
-        assertEquals(sourceCompany.getAddress(), resultCompany.getAddress());
-        assertEquals(sourceCompany.getPhoneNumber(), resultCompany.getPhoneNumber());
-        assertEquals(sourceCompany.getRegistrationNumber(), resultCompany.getRegistrationNumber());
-        assertNull(resultCompany.getDepartments());
+        assertEquals(expected.getName(), result.getName());
+        assertEquals(expected.getAddress(), result.getAddress());
+        assertEquals(expected.getPhoneNumber(), result.getPhoneNumber());
+        assertEquals(expected.getRegistrationNumber(), result.getRegistrationNumber());
+        assertNull(result.getDepartments());
     }
 
     @Test
-    public void getById_addedCompaniesWithDepartmentsIfRequestParamFullEqualsTrue_shouldReturnSameCompanyWithDepartments() {
+    public void getById_addedSomeCompaniesWithDepartmentsIfRequestParamFullEqualsTrue_shouldReturnSameCompanyWithDepartments() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
-        Company sourceCompany = allCompanies.get(0);
+        Company expected = allCompanies.get(0);
 
-        Company resultCompany = testRestTemplate.getForObject(baseUrl + "/" + sourceCompany.getId() + "?full=true", Company.class);
+        Company result = testRestTemplate.getForObject(baseUrl + "/" + expected.getId() + "?full=true", Company.class);
 
-        assertThat(sourceCompany)
+        assertThat(expected)
                 .usingRecursiveComparison()
-                .isEqualTo(resultCompany);
+                .isEqualTo(result);
     }
 
     @Test
-    public void update_addedCompanies_getByIdReturnsUpdatedCompany() {
+    public void update_addedSomeCompanies_getByIdReturnsUpdatedCompany() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
@@ -222,10 +222,9 @@ public class CompanyIT {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
 
-        int index = 1;
-        Company company = allCompanies.get(index);
+        Company company = allCompanies.get(1);
         testRestTemplate.delete(baseUrl + "/" + company.getId());
-        allCompanies.remove(index);
+        allCompanies.remove(company);
 
         List<Company> remainingCompanies = List.of(testRestTemplate.getForObject(baseUrl + "?full=true", Company[].class));
 

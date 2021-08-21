@@ -156,6 +156,26 @@
 					"response": []
 				},
 				{
+					"name": "Try to delete company with existing employees",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/companies/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"companies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete company by id",
 					"request": {
 						"method": "DELETE",
@@ -321,12 +341,12 @@
 					"response": []
 				},
 				{
-					"name": "Delete department by id",
+					"name": "Try to delete department from existing company",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/departments/11",
+							"raw": "localhost:8080/api/departments/1",
 							"host": [
 								"localhost"
 							],
@@ -334,7 +354,27 @@
 							"path": [
 								"api",
 								"departments",
-								"11"
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete department by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/departments/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"departments",
+								"10"
 							]
 						}
 					},
@@ -507,6 +547,32 @@
 								"api",
 								"employees",
 								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of employees with salary higher than limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/employees/limit?limit=13000",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"employees",
+								"limit"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "13000"
+								}
 							]
 						}
 					},

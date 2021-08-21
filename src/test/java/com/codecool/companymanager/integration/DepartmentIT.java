@@ -52,7 +52,7 @@ public class DepartmentIT {
     }
 
     @Test
-    public void addNew_addDepartmentWithEmptyName_() {
+    public void addNew_addDepartmentWithEmptyName_shouldReturnHttpStatus400BAD_REQUEST() {
         Department invalidDepartment = new Department(1L, "");
 
         ResponseEntity<Department> response = testRestTemplate.postForEntity(baseUrl, invalidDepartment, Department.class);

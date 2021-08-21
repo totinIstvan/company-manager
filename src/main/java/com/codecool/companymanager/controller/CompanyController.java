@@ -92,7 +92,7 @@ public class CompanyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with id " + id + " not found");
         } catch (DataIntegrityViolationException exception) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Company with id " + id +
-                    " cannot be deleted from the database because it still has existing departments and/or employees");
+                    " cannot be deleted from the database because it still has existing employees");
         }
     }
 
