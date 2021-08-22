@@ -23,6 +23,17 @@ public class CompanyDto {
 
     private List<DepartmentDto> departments;
 
+    public CompanyDto() {
+    }
+
+    public CompanyDto(Long id, String name, String registrationNumber, String address, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.registrationNumber = registrationNumber;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getId() {
         return id;
     }

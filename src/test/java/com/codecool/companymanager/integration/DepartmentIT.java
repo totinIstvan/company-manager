@@ -103,7 +103,7 @@ public class DepartmentIT {
     }
 
     @Test
-    public void getById_addedDepartmentsRequestForInvalidId__returnsHttpStatusCode404NOT_FOUND() {
+    public void getById_addedDepartmentsRequestForInvalidId_returnsHttpStatusCode404NOT_FOUND() {
         testRestTemplate.postForObject(baseUrl, testDepartment1, Department.class);
         testRestTemplate.postForObject(baseUrl, testDepartment2, Department.class);
 

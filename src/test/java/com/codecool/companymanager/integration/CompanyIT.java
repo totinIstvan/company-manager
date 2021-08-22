@@ -3,14 +3,13 @@ package com.codecool.companymanager.integration;
 import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.entity.Employee;
-import com.codecool.companymanager.repository.DepartmentRepository;
-import com.codecool.companymanager.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -36,12 +35,6 @@ public class CompanyIT {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
 
     private Company testCompany1;
     private List<Company> allCompanies;
@@ -77,8 +70,8 @@ public class CompanyIT {
 
         this.testDepartment1 = new Department(1L, "TestDepartmentName1");
         this.testDepartment2 = new Department(2L, "TestDepartmentName2");
-        departmentRepository.save(testDepartment1);
-        departmentRepository.save(testDepartment2);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/departments", new HttpEntity<>(testDepartment1), Department.class);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/departments", new HttpEntity<>(testDepartment2), Department.class);
 
         this.testEmployee1 = new Employee(1L,
                 "testEmployeeName1",
@@ -237,9 +230,9 @@ public class CompanyIT {
     public void getAllEmployeesOfTheCompany_requestForAllEmployeesByCompanyId_returnsListOfAllEmployees() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
-        employeeRepository.save(testEmployee1);
-        employeeRepository.save(testEmployee2);
-        employeeRepository.save(testEmployee3);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee1), Employee.class);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee2), Employee.class);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee3), Employee.class);
 
         Employee[] source = {testEmployee1, testEmployee2, testEmployee3};
         Employee[] allEmployeesOfCompany = testRestTemplate.getForObject(baseUrl + "/" + allCompanies.get(0).getId() + "/employees", Employee[].class);
@@ -258,9 +251,9 @@ public class CompanyIT {
     public void getAllEmployeesOfTheCompanyByDepartment_requestForAllEmployeesByCompanyIdAndDepartmentId_returnsListOfEmployees() {
         this.allCompanies.forEach(company -> company.setDepartments(Arrays.asList(testDepartment1, testDepartment2)));
         allCompanies.forEach(company -> testRestTemplate.postForEntity(baseUrl, company, Company.class));
-        employeeRepository.save(testEmployee1);
-        employeeRepository.save(testEmployee2);
-        employeeRepository.save(testEmployee3);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee1), Employee.class);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee2), Employee.class);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/employees", new HttpEntity<>(testEmployee3), Employee.class);
 
         Employee[] source = {testEmployee2, testEmployee3};
         Employee[] allEmployeesByDepartment = testRestTemplate.getForObject(baseUrl + "/" + allCompanies.get(0).getId() + "/departments" + "/" + testEmployee3.getDepartment().getId() + "/employees", Employee[].class);

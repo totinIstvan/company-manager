@@ -3,14 +3,13 @@ package com.codecool.companymanager.integration;
 import com.codecool.companymanager.model.entity.Company;
 import com.codecool.companymanager.model.entity.Department;
 import com.codecool.companymanager.model.entity.Employee;
-import com.codecool.companymanager.repository.CompanyRepository;
-import com.codecool.companymanager.repository.DepartmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -37,30 +36,22 @@ public class EmployeeIT {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
-    private Company testCompany;
-    private Department testDepartment;
     private Employee testEmployee1;
-    private Employee testEmployee2;
-    private Employee testEmployee3;
+    private List<Employee> employees;
 
     @BeforeEach
     public void setUp() {
         this.baseUrl = "http://localhost:" + port + "/api/employees";
 
-        this.testCompany = new Company(1L,
+        Company testCompany = new Company(1L,
                 "TestCompanyName",
                 "TestRegNumber",
                 "TestAddress",
                 "+1 111 111 1111");
-        companyRepository.save(testCompany);
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/companies", new HttpEntity<>(testCompany), Company.class);
 
-        this.testDepartment = new Department(1L, "TestDepartmentName1");
-        departmentRepository.save(testDepartment);
+        Department testDepartment = new Department(1L, "TestDepartmentName1");
+        testRestTemplate.postForObject("http://localhost:" + port + "/api/departments", new HttpEntity<>(testDepartment), Department.class);
 
         testCompany.setDepartments(List.of(testDepartment));
 
@@ -73,7 +64,7 @@ public class EmployeeIT {
                 testDepartment,
                 testCompany);
 
-        this.testEmployee2 = new Employee(2L,
+        Employee testEmployee2 = new Employee(2L,
                 "testEmployeeName2",
                 "testTitle2",
                 "testEmail2@testCompany.com",
@@ -82,7 +73,7 @@ public class EmployeeIT {
                 testDepartment,
                 testCompany);
 
-        this.testEmployee3 = new Employee(3L,
+        Employee testEmployee3 = new Employee(3L,
                 "testEmployeeName3",
                 "testTitle3",
                 "testEmail3@testCompany.com",
@@ -90,6 +81,8 @@ public class EmployeeIT {
                 LocalDateTime.of(2000, 12, 12, 12, 12, 12),
                 testDepartment,
                 testCompany);
+
+        this.employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
     }
 
     @Test
@@ -179,8 +172,7 @@ public class EmployeeIT {
 
     @Test
     public void getAll_addedSomeEmployeesWithDepartmentAndCompanyIfRequestParamFullEqualsFalse_shouldReturnAllEmployeesWithoutDepartmentAndCompany() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         List<Employee> result = List.of(testRestTemplate.getForObject(baseUrl + "?full=false", Employee[].class));
 
@@ -197,8 +189,7 @@ public class EmployeeIT {
 
     @Test
     public void getAll_addedSomeEmployeesWithDepartmentAndCompanyIfRequestParamFullEqualsTrue_shouldReturnAllEmployeesWithDepartmentAndCompany() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         List<Employee> result = List.of(testRestTemplate.getForObject(baseUrl + "?full=true", Employee[].class));
 
@@ -218,8 +209,7 @@ public class EmployeeIT {
 
     @Test
     public void getById_addedSomeEmployeesWithDepartmentAndCompanyIfRequestParamFullEqualsFalse_shouldReturnEmployeeWithoutDepartmentAndCompany() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         Employee expected = employees.get(0);
 
@@ -236,8 +226,7 @@ public class EmployeeIT {
 
     @Test
     public void getById_addedSomeEmployeesWithDepartmentAndCompanyIfRequestParamFullEqualsTrue_shouldReturnEmployeeWithDepartmentAndCompany() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         Employee expected = employees.get(0);
 
@@ -250,8 +239,7 @@ public class EmployeeIT {
 
     @Test
     public void update_addedSomeEmployees_getByIdReturnsUpdatedEmployee() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         Employee expected = employees.get(0);
 
@@ -268,8 +256,7 @@ public class EmployeeIT {
 
     @Test
     public void delete_fromAddedEmployees_getAllReturnsRemainingEmployees() {
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
-        employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
+        this.employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
         Employee expected = employees.get(1);
         testRestTemplate.delete(baseUrl + "/" + expected.getId());
@@ -284,13 +271,15 @@ public class EmployeeIT {
 
     @Test
     public void getWithSalaryHigherThan_addedSomeEmployees_returnsAllEmployeesWithSalaryHigherThanLimit() {
-        testEmployee1.setSalary(11000);
-        testEmployee2.setSalary(12500);
-        testEmployee3.setSalary(14000);
-        List<Employee> employees = new ArrayList<>(Arrays.asList(testEmployee1, testEmployee2, testEmployee3));
+        int payRaise = 600;
+        for (Employee e : this.employees) {
+            e.setSalary(e.getSalary() + payRaise);
+            payRaise *= 2;
+        }
+
         employees.forEach(employee -> testRestTemplate.postForEntity(baseUrl, employee, Employee.class));
 
-        int limit = 12000;
+        int limit = 11000;
         employees.removeIf(e -> e.getSalary() < limit);
 
         List<Employee> result = List.of(testRestTemplate.getForObject(baseUrl + "/limit?limit=" + limit, Employee[].class));
