@@ -65,10 +65,12 @@ Lehetőségek:
 
 `/api/employees/limit`	- GET/ Paraméter ?limit=12000 – A megadott limitet meghaladó fizetéssel rendelkező alkalmazottak listája
 
-### ***hivatkozások:***
+### ***Hivatkozások:***
 
 http://localhost:8080/v3/api-docs
 
 http://localhost:8080/swagger-ui/
 
 A projectben található egy postman collection a végpontok ellenőrzéséhez
+
+A konténerizáció a `docker-compose up` paranccsal indítható terminálból

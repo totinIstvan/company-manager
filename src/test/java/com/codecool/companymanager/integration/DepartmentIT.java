@@ -74,6 +74,7 @@ public class DepartmentIT {
     @Test
     public void getAll_emptyDatabase_shouldReturnEmptyList() {
         List<Department> departments = List.of(testRestTemplate.getForObject(baseUrl, Department[].class));
+
         assertTrue(departments.isEmpty());
     }
 

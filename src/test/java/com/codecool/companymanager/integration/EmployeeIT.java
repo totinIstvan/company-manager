@@ -167,6 +167,7 @@ public class EmployeeIT {
     @Test
     public void getAll_emptyDatabase_shouldReturnEmptyList() {
         List<Employee> employees = List.of(testRestTemplate.getForObject(baseUrl, Employee[].class));
+
         assertTrue(employees.isEmpty());
     }
 
